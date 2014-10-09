@@ -2,11 +2,15 @@ package com.android.fukuro;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 	
 	private DBHelper dbHelper = new DBHelper(this);
 	
@@ -20,7 +24,17 @@ public class MainActivity extends Activity {
 		//読み書き可能なデータベースをオープン
 		// 読み取り専用の場合はgetReadableDatabase()を用いる
 		db = dbHelper.getWritableDatabase();
+		
+        Button btnjump=(Button)findViewById(R.id.btnjump);
+        btnjump.setOnClickListener(this);
+		
 	}
+	
+	@Override
+    public void onClick(View v) {
+        Intent intent = new Intent(MainActivity.this, MyPage.class);
+        startActivity(intent);
+   }
 	
 	@Override
 	public void onDestroy(){
