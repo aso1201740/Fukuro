@@ -1,30 +1,25 @@
 package com.android.fukuro;
 
 	import android.content.Context;
-	import android.content.res.Resources;
-	import android.graphics.Bitmap;
-	import android.graphics.BitmapFactory;
-	import android.graphics.Canvas;
-	import android.graphics.Paint;
-	import android.view.View;
+import android.content.res.Resources;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.app.Activity;
+import android.widget.ImageView;
 
-	public class MyPage extends View {
-	    Paint paint = new Paint();
-	    
-	    //âÊëúì«Ç›çûÇ›
-	    Resources res = this.getContext().getResources();
-	    Bitmap grass = BitmapFactory.decodeResource(res, R.drawable.back);
-	    Bitmap goburin = BitmapFactory.decodeResource(res, R.drawable.coordinate);
-	    
-	    public MyPage(Context context) {
-	        super(context);
-	    }
-	    
+	public class MyPage extends Activity {
+	     
+	    /** Called when the activity is first created. */
 	    @Override
-	    public void onDraw(Canvas c) {
-	        //ï`âÊèàóù
-	        c.drawBitmap(grass, 0, 0, paint);
-	        c.drawBitmap(goburin, 250, 150, paint);
-	    }
+	    public void onCreate(Bundle savedInstanceState) {
+	        super.onCreate(savedInstanceState);
+	        TextView tv = new TextView(this);
+	        tv.setText("This is SubActivity!");
+	        setContentView(tv);
+	        ImageView iv = new ImageView(this);
+	        iv.setImageResource(R.drawable.coordinate);
+	        setContentView(iv);
+	    }    
 	}
 
