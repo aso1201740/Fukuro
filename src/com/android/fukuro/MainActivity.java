@@ -18,7 +18,6 @@ import android.widget.Button;
 public class MainActivity extends Activity implements View.OnClickListener {
 	
 	private DBHelper dbHelper = new DBHelper(this);
-	
 	public static SQLiteDatabase db;
 
 	@Override
@@ -29,6 +28,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		//読み書き可能なデータベースをオープン
 		// 読み取り専用の場合はgetReadableDatabase()を用いる
 		db = dbHelper.getWritableDatabase();
+		
 		
         Button btnjump=(Button)findViewById(R.id.btnjump);
         btnjump.setOnClickListener(this);
