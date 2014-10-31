@@ -28,6 +28,7 @@ import android.widget.ImageView;
 	    private ArrayList<String> coordename = new ArrayList<String>();
 	    /** Called when the activity is first created. */
 	    private boolean firstflg = false;
+	    private String topimage; 
 	    
 	    @Override
 	    protected void onStop(){
@@ -57,7 +58,7 @@ import android.widget.ImageView;
 	       // Log.d("test","cursor" + c.getCount()); //検査用
 
 	        for (int i = 0; i < c1.getCount() ; i++) {
-                coordename.add(c1.getString(0));
+                topimage = c1.getString(0);
                 Log.d("test","name=" + coordename);
                 c1.moveToNext();
 	        }
@@ -69,7 +70,7 @@ import android.widget.ImageView;
 	        c2.moveToFirst();
 	       // Log.d("test","cursor" + c.getCount()); //検査用
 
-	        for (int i = 0; i < c2.getCount() ; i++) {
+	        for (int i = 0; i < c2.getCount(); i++) {
                 coordename.add(c2.getString(0));
                 Log.d("test","name=" + coordename);
                 c2.moveToNext();
@@ -86,7 +87,7 @@ import android.widget.ImageView;
 	        		}else{
 	        		firstflg = true;
 	        		}
-	        		selectedIndex = selectedIndex % (coordename.size() - 1) + 1;
+	        		selectedIndex = selectedIndex % coordename.size();
 	        		Log.d(TAG, "selectedIndex = " + selectedIndex);
 	        		Message msg1 = new Message();
 	        		msg1.what = selectedIndex;
@@ -94,7 +95,7 @@ import android.widget.ImageView;
 	        		}
 	    	};
 	        timer = new Timer();
-	        timer.schedule(task, 5000,10000);
+	        timer.schedule(task, 0,6000);
 	    }
 	    
 	        class MyHandler extends Handler{
@@ -105,7 +106,7 @@ import android.widget.ImageView;
 	        		File dir = new File("/data/data/com.android.fukuro/Item");
 	    	        if(dir.exists()){
 	    	        	//Log.d(TAG,"arraylist参照" + coordename);
-	    	            File file = new File(dir.getAbsolutePath()+ "/" + coordename.get(0));
+	    	            File file = new File(dir.getAbsolutePath()+ "/" + topimage);
 	    	           // Log.d(TAG,"1banImage");
 	    	            if (file.exists()) {
 	    	            	//Log.d(TAG,"arraylist" + file);
@@ -117,8 +118,8 @@ import android.widget.ImageView;
 	    	            }
 	    	        }  
 	    	        int index1 = msg1.what;
-	        		index1 = index1 % (coordename.size()-1)+1;
-	        		Log.d(TAG, "number=" + index1);
+	        		index1 = index1 % coordename.size();
+	        		Log.d(TAG, "number1=" + index1);
 	    	        if(dir.exists()){
 	    	            File file = new File(dir.getAbsolutePath()+ "/" + coordename.get(index1));
 	    	            if (file.exists()) {
@@ -131,7 +132,7 @@ import android.widget.ImageView;
 	    	        }  
 	    	        int index2 = msg1.what;
 	    	        index2 = index2 + 1;
-	        		index2 = index2 % (coordename.size()-1)+2;
+	        		index2 = index2 % coordename.size();
 	    	        if(dir.exists()){
 	    	            File file = new File(dir.getAbsolutePath()+ "/" + coordename.get(index2));
 	    	            if (file.exists()) {
@@ -144,7 +145,7 @@ import android.widget.ImageView;
 	    	        }  
 	    	        int index3 = msg1.what;
 	        		index3 = index3 + 2;
-	        		index3 = index3 % (coordename.size()-1)+3;
+	        		index3 = index3 % coordename.size();
 	    	        if(dir.exists()){
 	    	        	File file = new File(dir.getAbsolutePath()+ "/" + coordename.get(index3));
 	    	            if (file.exists()) {
