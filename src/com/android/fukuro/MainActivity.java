@@ -33,6 +33,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Button btnjump=(Button)findViewById(R.id.btnjump);
         btnjump.setOnClickListener(this);
         
+        Button btnmylist=(Button)findViewById(R.id.btnmylist);
+        btnmylist.setOnClickListener(this);
+        
         FileOutputStream fo;
 
         File newfile = new File("/data/data/com.android.fukuro/Item");
@@ -69,8 +72,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	
 	@Override
     public void onClick(View v) {
-        Intent intent = new Intent(MainActivity.this, MyPage.class);
-        startActivity(intent);
+		Intent intent = null;
+		switch(v.getId()){
+			case R.id.btnjump:
+				
+				intent = new Intent(MainActivity.this, MyPage.class);
+				startActivity(intent);
+				break;
+				
+			case R.id.btnmylist:
+				
+				intent = new Intent(MainActivity.this, MyPage.class);
+		        startActivity(intent);
+		        break;
+		}
+        
    }
 	
 	@Override
