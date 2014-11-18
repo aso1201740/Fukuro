@@ -27,6 +27,8 @@
             android:name="MyPage"
             android:label="@string/app_name" >
         </activity>
-    </application>
+        <activity android:name="ItemMylist" android:label="@string/app_name"></activity>
+        <activity android:name="StickyGridHeadersGridView" android:label="@string/app_name"></activity>
+        <activity android:name="SampleExpandableListActivity" android:label="@string/app_name"></activity></application>
 
 </manifest>

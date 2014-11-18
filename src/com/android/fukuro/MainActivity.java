@@ -82,7 +82,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 				
 			case R.id.btnmylist:
 				
-				intent = new Intent(MainActivity.this, MyPage.class);
+				intent = new Intent(MainActivity.this, ItemMylist.class);
 		        startActivity(intent);
 		        break;
 		}
