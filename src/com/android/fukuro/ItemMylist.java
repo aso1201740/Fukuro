@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -25,8 +24,7 @@ import android.widget.ImageView;
 public class ItemMylist extends Activity implements OnItemClickListener {
 	// 要素をArrayListで設定
 	private List<String> imgList = new ArrayList<String>();
-	private List<Integer> filename = new ArrayList<Integer>();
-	private List<String> favoList = new ArrayList<String>();
+	private List<Integer> itemid = new ArrayList<Integer>();
 	private DBHelper dbHelper = new DBHelper(this);
 	public static SQLiteDatabase db;
 
@@ -39,73 +37,55 @@ public class ItemMylist extends Activity implements OnItemClickListener {
 		setContentView(R.layout.itemlist);
 
 		db = dbHelper.getReadableDatabase();
-
-
 	}
 
 	@Override
 	protected void onResume() {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onResume();
-
 		imgList = new ArrayList<String>();
-		//filename = new ArrayList<Integer>();
-		//favoList = new ArrayList<String>();
-
-		// GridViewのインスタンスを生成
-				gridview = (GridView) findViewById(R.id.imageview);
-				// BaseAdapter を継承したGridAdapterのインスタンスを生成
-				// 子要素のレイアウトファイル grid_items.xml を main.xml に inflate するためにGridAdapterに引数として渡す
-				adapter = new GridAdapter(this.getApplicationContext(), R.layout.grid_items, imgList);
-				// gridViewにadapterをセット
-				gridview.setAdapter(adapter);
-				gridview.setOnItemClickListener(this);
-
-				// それのパスを取り出す method
-				getImagePath();
+		itemid = new ArrayList<Integer>();
+		gridview = (GridView) findViewById(R.id.gridview);
+		// BaseAdapter を継承したGridAdapterのインスタンスを生成
+		// 子要素のレイアウトファイル grid_items.xml を main.xml に inflate するためにGridAdapterに引数として渡す
+		adapter = new GridAdapter(this.getApplicationContext(), R.layout.grid_items, imgList);
+		// gridViewにadapterをセット
+		gridview.setAdapter(adapter);
+		gridview.setOnItemClickListener(this);
+		// それのパスを取り出す method
+		getImagePath();
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO 自動生成されたメソッド・スタブ
-		/**
 		Intent vIntent = null;
+		Intent iIntent = null;
+		//startActivity(vIntent);
+		//startActivity(iIntent);
 
-		if(position == 0){
-			vIntent = new Intent(this, AddMylist.class);
-		}else{
-			vIntent = new Intent(this, MylistDetails.class);
-			vIntent.putExtra("ID", filename.get(position));
-		}
+		vIntent = new Intent(this, itemDetails.class);
+		vIntent.putExtra("ID", itemid.get(position));
+		iIntent = new Intent(this, itemDetails.class);
+		iIntent.putExtra("itemname", imgList.get(position));
 		startActivity(vIntent);
-		
-		**/
+		startActivity(iIntent);
 	}
 
 	private void getImagePath() {  //プラス画像とDBに格納してある画像のパスをimgListに挿入
 		String destPath = null;
 
-		//ArrayAdapter<String> adapter = new ArrayAdapter<String>(Mylist.this, R.id.gridview);
-
-		Cursor cr = db.rawQuery("SELECT item FROM Item ORDER BY category_id DESC",null);
+		Cursor cr = db.rawQuery("SELECT item, item_id FROM Item WHERE NOT category_id = \"7\" ORDER BY category_id DESC", null);
 		cr.moveToFirst();
-
-		//プラスボタン
-		//fileList.add("plus");
-		//imgList.add("plus"); //リソースから画像をとるのでダミーのパスを指定
-		//filename.add(0,0);
-		//favoList.add("plus");
-		//プラスボタン画像をfileListに挿入
-
-		for(int cnt = 1; cnt <= cr.getCount(); cnt++){
-			destPath = "/data/data/"+this.getPackageName()+"/Item/" + cr.getString(1);
-			System.out.println(cr.getString(1));
+		
+		for(int cnt = 0; cnt < cr.getCount(); cnt++){
+			destPath = "/data/data/"+this.getPackageName()+"/Item/" + cr.getString(0);
+			Log.d("TAG","id" + cr.getString(0));
+			System.out.println(cr.getString(0));
 
 			// List<String> imgList にはファイルのパスを入れる
 			imgList.add(destPath);
-			filename.add(cnt,cr.getInt(0));
-			favoList.add(cr.getString(3));
+			itemid.add(cnt,cr.getInt(0));
 			cr.moveToNext();
 		}
 
@@ -120,8 +100,6 @@ public class ItemMylist extends Activity implements OnItemClickListener {
 
 	class ViewHolder {
 		ImageView imageView;
-		ImageView favo;
-		ImageView nStar;
 	}
 
 	class GridAdapter extends BaseAdapter {
@@ -137,8 +115,6 @@ public class ItemMylist extends Activity implements OnItemClickListener {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			String mFilepath = imgList.get(position);
-			String mFavo =favoList.get(position);
-			Log.d("image","favo="+favoList);
 
 			ViewHolder holder;
 			if (convertView == null) {
@@ -147,35 +123,18 @@ public class ItemMylist extends Activity implements OnItemClickListener {
 				// ViewHolder を生成
 				holder = new ViewHolder();
 				holder.imageView = (ImageView) convertView.findViewById(R.id.imageview);
-				//holder.favo = (ImageView)convertView.findViewById(R.id.favo);
 				convertView.setTag(holder);
 			}
 			else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			//Resources r = getResources();
-			//Bitmap bmp2 = BitmapFactory.decodeResource(r,R.drawable.no_star);
-			//Bitmap bmp3 = BitmapFactory.decodeResource(r,R.drawable.white);
 
-			if(position != 0){  //プラスボタン以外の画像読み出し
+			//if(position != 0){  //プラスボタン以外の画像読み出し
 				Bitmap bmp = BitmapFactory.decodeFile(mFilepath);
 				bmp = Bitmap.createScaledBitmap(bmp, 120, 160, true);
 				holder.imageView.setImageBitmap(bmp);
-				if(mFavo.equals("true")){
-
-				}else{
-					//holder.favo.setImageBitmap(bmp2);
-				}
-
-			}else{  //プラスボタンの画像読み出し
-				//Bitmap bmp = BitmapFactory.decodeResource(r,R.drawable.plus);
-				//bmp = Bitmap.createScaledBitmap(bmp, 120, 160, true);
-				//holder.imageView.setImageBitmap(bmp);
-
-				//holder.favo.setImageBitmap(bmp3);
-			}
-
+			//}
 			return convertView;
 		}
 

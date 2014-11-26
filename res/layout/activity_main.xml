@@ -9,7 +9,7 @@
     tools:context="com.android.fukuro.MainActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/cateTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
@@ -18,9 +18,9 @@
         android:id="@+id/btnjump"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/cateTxt"
+        android:layout_alignRight="@+id/cateTxt"
+        android:layout_below="@+id/cateTxt"
         android:layout_marginTop="77dp"
         android:text="jump" />
 
